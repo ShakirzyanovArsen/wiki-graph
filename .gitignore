@@ -3,3 +3,4 @@ throttle.ctrl
 __pycache__/
 apicache-py3/
 .idea/
+*.json

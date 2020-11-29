@@ -92,4 +92,4 @@ class ApiWrapper:
                 pm.hunks
             )
             result.append(rev_diff)
-            return result
+        return result
