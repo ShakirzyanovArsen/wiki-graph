@@ -10,7 +10,7 @@ class RevsWithTypes:
         self.site_name = site_name
         self.title = title
         
-    def convert_revisions_to_list():
+    def convert_revisions_to_list(self):
         api_wrapper = ApiWrapper(self.lang, self.site_name)
         revisions = api_wrapper.get_revisions_diffs(self.title)
         converted = list(map(
@@ -22,8 +22,8 @@ class RevsWithTypes:
         revisions))
         return converted
      
-    def add_type_to_revision():
-        revisions = convert_revisions_to_list()
+    def add_type_to_revision(self):
+        revisions = self.convert_revisions_to_list()
         links_regex = 'http[s]?:\/\/(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
         wiki_links_regex = 'http[s]?:\/\/(?:[a-zA-Z])+.wikipedia.org\/'
         for dict in revisions:
