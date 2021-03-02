@@ -6,6 +6,8 @@ from pywikibot.diff import Hunk, PatchManager
 from pywikibot.page import Revision
 from typing import List
 
+from add_type import RevsWithTypes
+
 
 class RevisionDiff:
     def __init__(self, old_revid: int, new_revid: int, old_ts: datetime, new_ts: datetime, lines_diffs: List[tuple]):
@@ -92,4 +94,6 @@ class ApiWrapper:
                 pm.hunks
             )
             result.append(rev_diff)
+        add_type = RevsWithTypes()
+        result = add_type.add_type_to_revision(result)
         return result

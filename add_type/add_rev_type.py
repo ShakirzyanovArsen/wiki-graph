@@ -1,18 +1,11 @@
 import re
-from typing import List
-
-from api import ApiWrapper
 
 class RevsWithTypes:
 
-    def __init__(self, lang: str, site_name: str, title: str):
-        self.lang = lang
-        self.site_name = site_name
-        self.title = title
+    def __init__(self):
+        pass
         
-    def convert_revisions_to_list(self):
-        api_wrapper = ApiWrapper(self.lang, self.site_name)
-        revisions = api_wrapper.get_revisions_diffs(self.title)
+    def convert_revisions_to_list(self, revisions):
         converted = list(map(
         lambda x: {
             'old_revid': x.old_revid,
@@ -22,11 +15,11 @@ class RevsWithTypes:
         revisions))
         return converted
      
-    def add_type_to_revision(self):
-        revisions = self.convert_revisions_to_list()
+    def add_type_to_revision(self, revisions):
+        revisions_list = self.convert_revisions_to_list(revisions)
         links_regex = 'http[s]?:\/\/(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
         wiki_links_regex = 'http[s]?:\/\/(?:[a-zA-Z])+.wikipedia.org\/'
-        for dict in revisions:
+        for dict in revisions_list:
             lines_diffs_list = dict['lines_diffs']
             for line_numb in range(len(lines_diffs_list)):
                 line_diffs = lines_diffs_list[line_numb]
@@ -42,4 +35,4 @@ class RevsWithTypes:
                             line_diffs['type'] = 'Ссылка на источник'
                     else:
                         line_diffs['type'] = 'Малая правка'
-        return revisions
+        return revisions_list
