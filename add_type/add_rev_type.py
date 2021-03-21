@@ -23,16 +23,28 @@ class RevsWithTypes:
             lines_diffs_list = dict['lines_diffs']
             for line_numb in range(len(lines_diffs_list)):
                 line_diffs = lines_diffs_list[line_numb]
+                if line_diffs['old'] is None:
+                    line_diffs['old'] = 'None'
                 if line_diffs['new'] is None:
-                    line_diffs['type'] = 'Малая правка'
-                else:
-                    match_link = re.search(links_regex, line_diffs['new'], flags=re.IGNORECASE)
-                    if match_link:
+                    line_diffs['new'] = 'Deleted'
+                match_link_old = re.search(links_regex, line_diffs['old'], flags=re.IGNORECASE)
+                match_link_new = re.search(links_regex, line_diffs['new'], flags=re.IGNORECASE)
+                if match_link_new:
+                    if match_link_old:
+                        if match_link_old.group() == match_link_new.group():
+                            line_diffs['type'] = 'Малая правка'
+                        else:
+                            match_wiki_link = re.search(wiki_links_regex, line_diffs['new'], flags=re.IGNORECASE)
+                            if match_wiki_link:
+                                line_diffs['type'] = 'Перевод вики-страницы'
+                            else:
+                                line_diffs['type'] = 'Ссылка на источник'
+                    else:
                         match_wiki_link = re.search(wiki_links_regex, line_diffs['new'], flags=re.IGNORECASE)
                         if match_wiki_link:
                             line_diffs['type'] = 'Перевод вики-страницы'
                         else:
                             line_diffs['type'] = 'Ссылка на источник'
-                    else:
-                        line_diffs['type'] = 'Малая правка'
+                else:
+                    line_diffs['type'] = 'Малая правка'
         return revisions_list
