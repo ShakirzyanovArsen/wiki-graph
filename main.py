@@ -12,4 +12,4 @@ if __name__ == '__main__':
     make_graph = MakeGraph()
     graph = make_graph.make_graph(result, page_name)
     with open('data.json', 'w', encoding='utf-8') as f:
-        json.dump(result, f, ensure_ascii=False)
+        json.dump(graph, f, ensure_ascii=False)
